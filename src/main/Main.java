@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import model.entidade.Reserva;
 
-//Aula 137 e 138 Exceptions (Solução Muito Ruim) {Github}  
+//Aulas 137 - 138 - 139 Exceptions (Solução Ruim) {Github}  
 public class Main {
 
 	public static void main(String[] args) throws ParseException {
@@ -34,14 +34,11 @@ public class Main {
 			System.out.print("Informe a data de saída (dd/MM/aaaa)? ");
 			dataSaida = sdf.parse(sc.next());
 
-			Date hoje = new Date();
-			if (dataEntrada.before(hoje) || dataSaida.before(hoje)) {// ENTRADA.Antes(hoje) ou SAÍDA.Antes(hoje)
-				System.out.println("Erro na reserva - Data de atualização de reserva dever ser datas futuras!");
-			} else if (!dataSaida.after(dataEntrada)) {
-				System.out.println("Erro na reserva - Data de ENTRADA depois da data de SAÍDA!");
-			} else {
-				reserva.atualizacaoData(dataEntrada, dataSaida);
-				System.out.println("Reserva: " + reserva);
+			String erro = reserva.atualizacaoData(dataEntrada, dataSaida);
+			if(erro != null) {
+				System.out.println(erro);
+			}else {
+			System.out.println("Reserva: " + reserva);
 			}
 		}
 
