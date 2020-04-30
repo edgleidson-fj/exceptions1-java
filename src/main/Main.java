@@ -6,25 +6,24 @@ import java.util.Date;
 import java.util.Scanner;
 
 import model.entidade.Reserva;
+import model.excecoes.DominioExcecoes;
 
-//Aulas 137 - 138 - 139 Exceptions (Solução Ruim) {Github}  
+//Aulas 137 - 138 - 139 - 140 Exceptions (Solução Boa) {Github}  
 public class Main {
 
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-		System.out.print("Informe o número do quarto? ");
-		int numeroQuarto = sc.nextInt();
-		System.out.print("Informe a data de entrada (dd/MM/aaaa)? ");
-		Date dataEntrada = sdf.parse(sc.next());
-		System.out.print("Informe a data de saída (dd/MM/aaaa)? ");
-		Date dataSaida = sdf.parse(sc.next());
+		try {
+			System.out.print("Informe o número do quarto? ");
+			int numeroQuarto = sc.nextInt();
+			System.out.print("Informe a data de entrada (dd/MM/aaaa)? ");
+			Date dataEntrada = sdf.parse(sc.next());
+			System.out.print("Informe a data de saída (dd/MM/aaaa)? ");
+			Date dataSaida = sdf.parse(sc.next());
 
-		if (!dataSaida.after(dataEntrada)) { // Diferente SAÍDA.depois(ENTRADA)
-			System.out.println("Erro na reserva - Data de ENTRADA depois da data de SAÍDA!");
-		} else {
 			Reserva reserva = new Reserva(numeroQuarto, dataEntrada, dataSaida);
 			System.out.println("Reserva: " + reserva);
 			System.out.println("_______________________________________");
@@ -34,14 +33,18 @@ public class Main {
 			System.out.print("Informe a data de saída (dd/MM/aaaa)? ");
 			dataSaida = sdf.parse(sc.next());
 
-			String erro = reserva.atualizacaoData(dataEntrada, dataSaida);
-			if(erro != null) {
-				System.out.println(erro);
-			}else {
+			reserva.atualizacaoData(dataEntrada, dataSaida);
 			System.out.println("Reserva: " + reserva);
-			}
+		} 
+		catch (ParseException ex) {
+			System.out.println("Formato da data inválido!");
+		} 
+		catch (DominioExcecoes ex) { // Exceção personalizada
+			System.out.println(ex.getMessage());
+		} 
+		catch (RuntimeException ex) {// Qual outro tipo de execeção.
+			System.out.println("Erro desconhecido: " + ex);
 		}
-
 		sc.close();
 	}
 }
